@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  check_in_date: 2023-05-03
+  check_out_date: 2023-05-03
+  stay_days: 1
+  number_of_people: 1
+  payment_amount: 1
+  reservation_confirmed_datetime: 
+
+two:
+  check_in_date: 2023-05-03
+  check_out_date: 2023-05-03
+  stay_days: 1
+  number_of_people: 1
+  payment_amount: 1
+  reservation_confirmed_datetime: 

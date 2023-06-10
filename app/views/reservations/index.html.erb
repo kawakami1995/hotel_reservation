@@ -1,0 +1,84 @@
+<header>
+  <headerContain>
+      <a href="/" class="header_logo_area"><img src="https://rails-02-sample.herokuapp.com/assets/common/logo.png" alt="ヘッダーロゴ" class="header_image"> </a>
+      <div class="headerButtons">
+          <% if user_signed_in? %>
+              <% if @user.user_image.blank? %>
+                  <%= image_tag "default_user.png", class: "top_user_image" %>
+              <% else %>
+                  <img src=<%= @user.user_image %>class="top_user_image"><br>   
+              <% end %>                                 
+              <div class="headerButton account_setting">
+                  <div class="dropdown_btn">
+                      <div id="user_name">
+                          <p class=""><%= @user.user_name %></p>
+                          <p class="triangle">▼</p>     
+                      </div>             
+                  </div>   
+                  <ul id="dropdown_list">
+                      <li class="dropdown_item"><a href="/rooms/new">施設の新規登録</a></li>
+                      <li class="dropdown_item"><a href="/reservations/index">予約済み一覧</a></li>
+                      <li class="dropdown_item"><a href="/rooms/index">登録済み一覧</a></li>
+                      <li class="dropdown_item"><a href="/users/account">アカウント設定</a></li>
+                      <li class="dropdown_item"><a href="/users/sign_out">ログアウト</a></li>
+                  </ul>
+              </div>              
+          <% else %>
+              <div class="headerButton login">
+                  <%= link_to "ログイン","/users/sign_in" %>
+              </div>
+              <div class="headerButton newAccount">
+                  <%= link_to "新規登録","/users/sign_up" %>
+              </div>       
+          <% end %>       
+      </div>
+  </headerContain>
+</header>
+<h3>予約済み一覧</h3>
+<table>
+  <thead>
+    <tr>
+      <th>イメージ</th>
+      <th>施設名</th>
+      <th>紹介文</th>
+      <th>合計料金</th>
+      <th>チェックイン</th>
+      <th>チェックアウト</th>
+      <th>予約確定日時</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @reservations.each do |reservation| %>
+      <tr>
+        <td>
+          <% if reservation.room_image.blank? %>
+            <%= image_tag "default_room.png" , class:"image" %><br>   
+          <% else %>
+            <img src=<%= reservation.room_image %> class="image"><br>   
+          <% end %>  
+        </td>
+        <td><%= link_to "#{reservation.room_name}", "/rooms/#{reservation.room_id}/show" , class:"link" %></td>
+        <td class="reservations_introduction">
+          <%= reservation.room_introduction %>
+        </td>
+        <td><%= "¥#{reservation.payment_amount.to_s(:delimited, delimiter: ',')}" %></td>
+        <td><%= reservation.check_in_date.strftime("%Y/%m/%d") %></td>
+        <td><%= reservation.check_out_date.strftime("%Y/%m/%d") %></td>
+        <td><%= reservation.created_at.to_s(:datetime_jp) %></td>
+        <td><%= link_to "再予約","/reservations/#{reservation.id}/rebook" , class:"link" %></td>
+        <td><%= button_to "削除","/reservations/#{reservation.id}/destroy", method: :delete, class: "delete_button" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<!-- Javascriptの外部ファイルが読み込めなかったため、やむを得ず直接記載しています。 -->
+<script type="text/javascript">
+  document.getElementById("dropdown_list").style.visibility = "hidden"
+  document.addEventListener("click", (e) => {        
+      if(!e.target.closest("#user_name")) {
+          document.getElementById("dropdown_list").style.visibility = "hidden"
+      } else {
+          document.getElementById("dropdown_list").style.visibility = "visible"
+      }
+    })
+</script>
