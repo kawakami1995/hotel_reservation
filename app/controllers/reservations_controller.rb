@@ -8,19 +8,16 @@ class ReservationsController < ApplicationController
 
   def confirm
     @user = current_user
-    @reservation = Reservation.new(params.require(:reservation).permit(:room_name, :room_introduction, :price, :address, :room_image, :check_in_date, :check_out_date, :number_of_people,:stay_days, :payment_amount, :user_id, :room_id))
+    @reservation = Reservation.new(params.require(:reservation).permit(:room_name, :room_introduction, :room_image , :price, :address, :check_in_date, :check_out_date, :number_of_people,:stay_days, :payment_amount, :user_id, :room_id))
     @day = Date.current
-    if @reservation.check_in_date > @reservation.check_out_date || @reservation.check_in_date == @reservation.check_out_date
+    if @reservation.invalid?
       @room = @reservation
-      @check_out_date_caution = "チェックアウト日はチェックイン日より後の日付を選択してください"
       render "rooms/show"
-    elsif @reservation.check_in_date < @day
-      @room = @reservation
-      @check_in_date_caution = "チェックイン日は今日より後の日付を選択してください"
-      render "rooms/show"  
+    else
+      @reservation.stay_days = (@reservation.check_out_date - @day) - (@reservation.check_in_date - @day).to_i
+      @reservation.payment_amount = @reservation.price * @reservation.number_of_people * @reservation.stay_days
     end
-    @reservation.stay_days = (@reservation.check_out_date - @day) - (@reservation.check_in_date - @day).to_i
-    @reservation.payment_amount = @reservation.price * @reservation.number_of_people * @reservation.stay_days
+
   end
 
   def create
@@ -42,24 +39,20 @@ class ReservationsController < ApplicationController
     @user = current_user
     @reservation = Reservation.new(params.require(:reservation).permit(:id, :room_name, :room_introduction, :price, :address, :room_image, :check_in_date, :check_out_date, :number_of_people,:stay_days, :payment_amount, :user_id, :room_id))
     @day = Date.current
-    if @reservation.check_in_date > @reservation.check_out_date || @reservation.check_in_date == @reservation.check_out_date
+    if @reservation.invalid?
       @room = @reservation
-      @check_out_date_caution = "チェックアウト日はチェックイン日より後の日付を選択してください"
       render "rebook"
-    elsif @day > @reservation.check_in_date 
-      @room = @reservation
-      @check_in_date_caution = "チェックイン日は今日より後の日付を選択してください"
-      render "rebook"
+    else
+      @reservation.stay_days = (@reservation.check_out_date - @day) - (@reservation.check_in_date - @day).to_i
+      @reservation.payment_amount = @reservation.price * @reservation.number_of_people * @reservation.stay_days
     end
-    @reservation.stay_days = (@reservation.check_out_date - @day) - (@reservation.check_in_date - @day).to_i
-    @reservation.payment_amount = @reservation.price * @reservation.number_of_people * @reservation.stay_days
   end
 
   def update
     @user = current_user
     @reservation = Reservation.find(params[:id])
-    if @reservation.update(params.require(:reservation).permit(:room_name, :room_introduction, :price, :address, :room_image, :check_in_date, :check_out_date, :number_of_people,:stay_days, :payment_amount, :user_id, :room_id))
-      redirect_to "/reservations/index"
+    if @reservation.update(params.require(:reservation).permit(:id, :room_name, :room_introduction, :price, :address, :room_image, :check_in_date, :check_out_date, :number_of_people,:stay_days, :payment_amount, :user_id, :room_id))
+      redirect_to reservations_index_path
     else
       render "index"      
     end
@@ -68,7 +61,7 @@ class ReservationsController < ApplicationController
   def destroy
     @reservation = Reservation.find(params[:id])
     @reservation.destroy
-    redirect_to "/reservations/index"
+    redirect_to reservations_index_path
   end
 
 end

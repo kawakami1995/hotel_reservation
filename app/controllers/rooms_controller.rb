@@ -10,6 +10,7 @@ class RoomsController < ApplicationController
   end
 
   def create
+    @user = current_user
     @room = Room.new(params.require(:room).permit(:room_name, :room_introduction, :price, :address, :room_image, :user_id))
     if @room.save
       redirect_to "/rooms/index"
@@ -36,6 +37,7 @@ class RoomsController < ApplicationController
   end
 
   def update
+    @user = current_user
     @room = Room.find(params[:id])
     if @room.update(params.require(:room).permit(:room_name, :room_introduction, :price, :address, :room_image))
       redirect_to "/rooms/index"

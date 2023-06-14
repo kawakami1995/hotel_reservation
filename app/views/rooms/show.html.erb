@@ -1,47 +1,14 @@
-<header>
-    <headerContain>
-        <a href="/" class="header_logo_area"><img src="https://rails-02-sample.herokuapp.com/assets/common/logo.png" alt="ヘッダーロゴ" class="header_image"> </a>
-        <div class="headerButtons">
-            <% if user_signed_in? %>
-                <% if @user.user_image.blank? %>
-                    <%= image_tag "default_user.png", class: "top_user_image" %>
-                <% else %>
-                    <img src=<%= @user.user_image %>class="top_user_image"><br>   
-                <% end %>                                 
-                <div class="headerButton account_setting">
-                    <div class="dropdown_btn">
-                        <div id="user_name">
-                            <p class=""><%= @user.user_name %></p>
-                            <p class="triangle">▼</p>     
-                        </div>             
-                    </div>   
-                    <ul id="dropdown_list">
-                        <li class="dropdown_item"><a href="/rooms/new">施設の新規登録</a></li>
-                        <li class="dropdown_item"><a href="/reservations/index">予約済み一覧</a></li>
-                        <li class="dropdown_item"><a href="/rooms/index">登録済み一覧</a></li>
-                        <li class="dropdown_item"><a href="/users/account">アカウント設定</a></li>
-                        <li class="dropdown_item"><a href="/users/sign_out">ログアウト</a></li>
-                    </ul>
-                </div>              
-            <% else %>
-                <div class="headerButton login">
-                    <%= link_to "ログイン","/users/sign_in" %>
-                </div>
-                <div class="headerButton newAccount">
-                    <%= link_to "新規登録","/users/sign_up" %>
-                </div>       
-            <% end %>       
-        </div>
-    </headerContain>
-</header>
 <h3>部屋詳細</h3>
+<%= render "shared/error", obj: @reservation %> 
 <%= form_with  model: Reservation.new ,url: reservations_confirm_path, html: {multipart: true} ,method: :get,local: true do |f| %>  
     <div class="field room_detail">
         <td>
-            <% if @room.room_image.blank? %>
+            <% if @room.room_image.blank? || @room.room_image == nil %>
                 <%= image_tag "default_room.png" %>
+            <% elsif @room.room_image.blank? %>   
+                <%= image_tag "default_room.png" %> 
             <% else %>
-                <img src=<%= @room.room_image %>><br>   
+                <img src=<%= @room.room_image %> class="room_image"><br>
             <% end %>       
         </td>
     </div>
@@ -64,17 +31,18 @@
         </div>
         <div class="field">
             <td><%= f.label :チェックイン %></td><p class="caution">※必須</p><br> 
-            <td><%= f.date_field :check_in_date,value: @reservation.check_in_date , required: true %></td>
+            <td><%= f.date_field :check_in_date,value: @reservation.check_in_date  %></td>
             <p class="caution"><%= @check_in_date_caution %></p>
         </div>
         <div class="field">
             <td><%= f.label :チェックアウト %></td><p class="caution">※必須</p><br> 
-            <td><%= f.date_field :check_out_date,value: @reservation.check_out_date , required: true %></td>
+            <td><%= f.date_field :check_out_date,value: @reservation.check_out_date %></td>
             <p class="caution"><%= @check_out_date_caution %></p>
         </div>
         <div class="field">
             <td><%= f.label :人数 %></td><p class="caution">※必須</p><br> 
-            <td><%= f.number_field :number_of_people,value: @reservation.number_of_people , required: true %></td>
+            <td><%= f.text_field :number_of_people,value: @reservation.number_of_people %></td>
+            <p class="caution"><%= @number_of_people_caution %></p>
         </div>
         <div class="field">       
             <%= f.hidden_field :user_id,value: @user.id %> 
@@ -90,17 +58,6 @@
         </div>
     </div>
 <% end %>
-<!-- Javascriptの外部ファイルが読み込めなかったため、やむを得ず直接記載しています。 -->
-<script type="text/javascript">
-    document.getElementById("dropdown_list").style.visibility = "hidden"
-    document.addEventListener("click", (e) => {        
-        if(!e.target.closest("#user_name")) {
-            document.getElementById("dropdown_list").style.visibility = "hidden"
-        } else {
-            document.getElementById("dropdown_list").style.visibility = "visible"
-        }
-      })
-</script>
 
 
 
