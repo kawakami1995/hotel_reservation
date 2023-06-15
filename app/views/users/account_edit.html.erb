@@ -1,0 +1,28 @@
+<div class="body">
+    <%= form_with model: @user, url: {action: "account_update"}, id: 'new_user', class: 'new_user', local: true do |f| %>
+
+    <div class="field">
+      <%= f.label :email %>
+      <%= f.email_field :email, autocomplete: "email" %><br />
+    </div>
+  
+    <div class="field">
+      <%= f.label :password %>
+      <% if @minimum_password_length %>
+      <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %>
+      <%= f.password_field :password, autocomplete: "new-password" %><br />
+    </div>
+  
+    <div class="field">
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password" %><br />
+    </div>
+  
+    <div class="field">
+      <%= f.submit :user_image, value: "更新"%>
+    </div>
+  
+  <% end %>  
+  <%= link_to "戻る", :back %>
+</div>

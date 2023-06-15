@@ -1,0 +1,63 @@
+<h3>再予約</h3>
+<%= render "shared/error", obj: @reservation %> 
+<%= form_with  model: @reservation ,url: "/reservations/#{@reservation.id}/rebook_confirm", html: {multipart: true} ,method: :get,local: true do |f| %>  
+    <div class="field room_detail">
+        <td>
+            <% if @reservation.room_image.blank? %>
+                <%= image_tag "default_room.png" %>
+            <% else %>
+                <img src=<%= @reservation.room_image %> class="room_image"><br>   
+            <% end %>       
+        </td>
+    </div>
+    <div class="room_information">
+        <div class="field">
+            <td><%= @reservation.room_name %></td>
+            <td><%= f.hidden_field :room_name,value: @reservation.room_name %></td>
+        </div>
+        <div class="field"> 
+            <td><%= @reservation.address %></td>
+            <td><%= f.hidden_field :address,value: @reservation.address %></td>
+        </div>
+        <div class="field">
+            <td><%= f.label :"¥#{@reservation.price.to_s(:delimited, delimiter: ',')}" %></td>
+            <td><%= f.hidden_field :price,value: @reservation.price %></td>
+        </div>
+        <div class="field">
+            <td><%= @reservation.room_introduction %></td>
+            <td><%= f.hidden_field :room_introduction,value: @reservation.room_introduction %></td>
+        </div>
+        <div class="field">
+            <td><%= f.label :チェックイン %></td><p class="caution">※必須</p><br> 
+            <td><%= f.date_field :check_in_date %></td>
+            <p class="caution"><%= @check_in_date_caution %></p>
+        </div>
+        <div class="field">
+            <td><%= f.label :チェックアウト %></td><p class="caution">※必須</p><br> 
+            <td><%= f.date_field :check_out_date %></td>
+            <p class="caution"><%= @check_out_date_caution %></p>
+        </div>
+        <div class="field">
+            <td><%= f.label :人数 %></td><p class="caution">※必須</p><br> 
+            <td><%= f.text_field :number_of_people %></td>
+        </div>
+        <div class="field">     
+            <%= f.hidden_field :user_id,value: @reservation.user_id %> 
+            <%= f.hidden_field :id,value: @reservation.id %> 
+            <%= f.hidden_field :room_image,value: @reservation.room_image %>
+            <% if @reservation.room_id %>
+                <%= f.hidden_field :room_id,value: @reservation.room_id %>
+            <% else %>
+                <%= f.hidden_field :room_id,value: @room.room_id %>
+            <% end %>        
+        </div>
+        <div class="field">
+            <%= f.submit "再予約する", class: "submit_button"%>
+        </div>
+    </div>
+<% end %>
+
+
+
+
+   

@@ -1,0 +1,26 @@
+<div class="body">
+    <%= form_with model: @user, url: {action: "profile_update"}, html: {multipart: true} ,local: true do |f| %>
+
+    <div class="field">
+        <%= f.label :user_name %>
+        <%= f.text_field :user_name, autofocus: true, autocomplete: "user_name", value: @user.user_name %><br />
+    </div>
+
+    <div class="field">
+        <%= f.label :self_introduction %>
+        <%= f.text_field :self_introduction, autocomplete: "self_introduction" %><br />
+    </div>
+
+    <div class="field">
+        <%= f.label :アイコン画像 %>
+        <%= f.file_field :user_image, autocomplete: "user_image", class: "file_field"%>
+    </div>  
+
+    <div class="field">
+        <%= f.submit "更新"%>
+    </div>
+
+    <% end %> 
+    <%= link_to "戻る", :back %>
+</div>
+

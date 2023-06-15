@@ -1,0 +1,40 @@
+<div class="rooms_search">
+  <%= form_with  url: rooms_search_path, html: {multipart: true} ,method: :get, local: true do |f| %> 
+      <%= f.text_field :area_name, placeholder: "エリアを入力してください" %>
+      <%= f.text_field :keyword, placeholder: "キーワードを入力してください" %>
+      <%= f.submit "検索" %>
+  <% end %>
+</div>
+<h3><%= "#{@count}件が見つかりました。" %></h3>
+<table>
+  <thead>
+    <tr>
+      <th>画像</th>
+      <th>施設名</th>
+      <th>紹介文</th>
+      <th>料金</th>
+      <th>住所</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rooms.each do |room| %>
+      <tr>
+        <td>
+          <% if room.room_image.blank? %>
+            <%= image_tag "default_room.png" , class:"image" %><br>   
+          <% else %>
+            <img src=<%= room.room_image %> class="image"><br>   
+          <% end %>  
+        </td>
+        <td><%= room.room_name %></td>
+        <td class="introduction">
+          <%= room.room_introduction %>
+        </td>
+        <td><%= "¥#{room.price.to_s(:delimited, delimiter: ',')}" %></td>
+        <td><%= room.address %></td>
+        <td><%= link_to "詳細","/rooms/#{room.id}/show" , class:"link" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

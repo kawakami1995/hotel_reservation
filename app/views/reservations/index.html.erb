@@ -1,0 +1,37 @@
+<h3>予約済み一覧</h3>
+<table>
+  <thead>
+    <tr>
+      <th>イメージ</th>
+      <th>施設名</th>
+      <th>紹介文</th>
+      <th>合計料金</th>
+      <th>チェックイン</th>
+      <th>チェックアウト</th>
+      <th>予約確定日時</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @reservations.each do |reservation| %>
+      <tr>
+        <td>
+          <% if reservation.room_image.blank? %>
+            <%= image_tag "default_room.png" , class:"image" %><br>   
+          <% else %>
+            <img src=<%= reservation.room_image %> class="image"><br>   
+          <% end %>  
+        </td>
+        <td><%= link_to "#{reservation.room_name}", "/rooms/#{reservation.room_id}/show" , class:"link" %></td>
+        <td class="reservations_introduction">
+          <%= reservation.room_introduction %>
+        </td>
+        <td><%= "¥#{reservation.payment_amount.to_s(:delimited, delimiter: ',')}" %></td>
+        <td><%= reservation.check_in_date.strftime("%Y/%m/%d") %></td>
+        <td><%= reservation.check_out_date.strftime("%Y/%m/%d") %></td>
+        <td><%= reservation.created_at.to_s(:datetime_jp) %></td>
+        <td><%= link_to "再予約","/reservations/#{reservation.id}/rebook" , class:"link" %></td>
+        <td><%= button_to "削除","/reservations/#{reservation.id}/destroy", method: :delete, class: "delete_button" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

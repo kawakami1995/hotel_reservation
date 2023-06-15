@@ -1,0 +1,12 @@
+<div class="body">
+    <h1>アカウント</h1>
+    <%= link_to "編集", "/users/account/edit" %><br>
+    <%= link_to "アカウント", "/users/account" %>
+    <%= link_to "プロフィール", "/users/profile" %><br>
+    <%= @user.email %><br>
+    <%= "*********" %><br>
+    <%= link_to "戻る", :back %>
+    <%= link_to "ログアウト", "/users/sign_out" %>
+    <%= button_to "アカウント削除", "/users/#{@user.id}/destroy", method: :delete, class: "delete_button account_delete" %>
+</div>
+

@@ -1,0 +1,16 @@
+<div class="body">
+    <h1>プロフィール</h1>
+    <%= link_to "編集", "/users/profile/edit" %><br>
+    <%= link_to "アカウント", "/users/account" %>
+    <%= link_to "プロフィール", "/users/profile" %><br>
+    <%= @user.user_name %><br>
+    <%= @user.self_introduction %><br>
+    <% if @user.user_image.blank? %>
+        <%= image_tag "default_user.png" ,class: "image" %><br>  
+    <% else %>
+        <img src=<%= @user.user_image %> class="image"><br>   
+    <% end %>  
+    <%= link_to "戻る", :back %>
+    <%= link_to "ログアウト", "/users/sign_out" %>
+</div>
+

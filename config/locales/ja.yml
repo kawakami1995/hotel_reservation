@@ -1,0 +1,18 @@
+ja:
+  activerecord:
+    attributes:
+      room:
+        room_name: 施設名
+        room_introduction: 施設詳細
+        address: 住所
+        price: 料金
+      reservation: 
+        check_in_date: チェックイン日
+        check_out_date: チェックアウト日
+        number_of_people: 人数  
+
+  activemodel:   # Formオブジェクトを用いた場合
+     attributes:
+       order_object:
+         post_code: 郵便番号
+

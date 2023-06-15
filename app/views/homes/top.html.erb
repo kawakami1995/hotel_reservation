@@ -1,0 +1,31 @@
+<head>
+</head>
+<body>
+    <div class="FirstView">
+        <div class="FirstViewContainer">
+            <h2 class="FirstViewTitle">
+                Potepan Shareで<br>
+                まだ体験したことのない<br>
+                旅をしよう
+            </h2>
+            <div class="rooms_search">
+                <%= form_with  model: @rooms ,url: rooms_search_path, html: {multipart: true} ,method: :get, local: true do |f| %> 
+                    <%= f.text_field :area_name , placeholder: "エリアを入力してください" %>
+                    <%= f.submit "検索" %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="RecommendArea">
+            <h2 class="RecommendAreaTitle"> おすすめのエリア</h2>
+            <div class="RecommendAreas">
+                <%= link_to "東京", rooms_search_path(area_name:"東京都") , class:"RecommendArea_tokyo" %>
+                <%= link_to "大阪", rooms_search_path(area_name:"大阪府") , class:"RecommendArea_osaka" %>
+                <%= link_to "京都", rooms_search_path(area_name:"京都府") , class:"RecommendArea_kyoto" %>
+                <%= link_to "札幌", rooms_search_path(area_name:"札幌市") , class:"RecommendArea_sapporo" %>
+            </div>
+        </div>    
+    </div>
+</body>
+
