@@ -3,7 +3,7 @@ class Reservation < ApplicationRecord
     has_many :rooms
     validates :check_in_date, presence: true
     validates :check_out_date, presence: true
-    validates :number_of_people, presence: true, numericality: {only_integer: true},numericality: {greater_than: 0} 
+    validates :number_of_people, presence: true, numericality: {only_integer: true, greater_than: 0}
     validate :check_in_date_check
     validate :check_out_date_check
 

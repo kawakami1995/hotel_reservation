@@ -12,9 +12,12 @@ class ReservationsController < ApplicationController
     @day = Date.current
     if @reservation.invalid?
       @room = @reservation
+      if @room.room_image.include?("default")
+        @room.room_image = nil
+      end
       render "rooms/show"
     else
-      @reservation.stay_days = (@reservation.check_out_date - @day) - (@reservation.check_in_date - @day).to_i
+      @reservation.stay_days = (@reservation.check_out_date - @day) - (@reservation.check_in_date - @day)
       @reservation.payment_amount = @reservation.price * @reservation.number_of_people * @reservation.stay_days
     end
 

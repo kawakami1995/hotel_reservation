@@ -5,8 +5,8 @@ class RoomsController < ApplicationController
   end
 
   def new
-    @room = Room.new
     @user = current_user
+    @room = Room.new
   end
 
   def create
@@ -27,7 +27,7 @@ class RoomsController < ApplicationController
   def show
     @user = current_user
     @room = Room.find(params[:id])
-    @reservation = Reservation.new()
+    @reservation = Reservation.new
   end
 
   def destroy

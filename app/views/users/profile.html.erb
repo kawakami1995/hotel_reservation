@@ -6,7 +6,7 @@
     <%= @user.user_name %><br>
     <%= @user.self_introduction %><br>
     <% if @user.user_image.blank? %>
-        <%= image_tag "default_user.png" ,class: "image" %><br>   
+        <%= image_tag "default_user.png" ,class: "image" %><br>  
     <% else %>
         <img src=<%= @user.user_image %> class="image"><br>   
     <% end %>  

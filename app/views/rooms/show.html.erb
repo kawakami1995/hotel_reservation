@@ -3,12 +3,10 @@
 <%= form_with  model: Reservation.new ,url: reservations_confirm_path, html: {multipart: true} ,method: :get,local: true do |f| %>  
     <div class="field room_detail">
         <td>
-            <% if @room.room_image.blank? || @room.room_image == nil %>
+            <% if @room.room_image.blank? %>
                 <%= image_tag "default_room.png" %>
-            <% elsif @room.room_image.blank? %>   
-                <%= image_tag "default_room.png" %> 
-            <% else %>
-                <img src=<%= @room.room_image %> class="room_image"><br>
+            <% else @room.room_image %>   
+                <img src=<%= @room.room_image %> class="room_image">
             <% end %>       
         </td>
     </div>
@@ -45,7 +43,8 @@
             <p class="caution"><%= @number_of_people_caution %></p>
         </div>
         <div class="field">       
-            <%= f.hidden_field :user_id,value: @user.id %> 
+            <%= f.hidden_field :user_id,value: @user.id %>
+            <%= f.hidden_field :room_image,value: @room.room_image %>
             <% if @room.id %>
                 <%= f.hidden_field :room_id,value: @room.id %> 
             <% elsif @room.room_id %>
